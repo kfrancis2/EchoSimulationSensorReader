@@ -42,7 +42,7 @@ void setup() {
 
   bno.setExtCrystalUse(true);
   
-  for (int i=0; i<100; i++) {
+  for (int i=0; i<30; i++) {
     zone1Zero += analogRead(zone1AnalogPin);
     zone2Zero += analogRead(zone2AnalogPin);
     zone3Zero += analogRead(zone3AnalogPin);
@@ -51,10 +51,11 @@ void setup() {
     delay(10);
   }
   
-  zone1Zero = zone1Zero/100;
-  zone2Zero = zone2Zero/100;
-  zone3Zero = zone3Zero/100;
-  zone4Zero = zone4Zero/100;
+  zone1Zero = zone1Zero/30;
+  zone2Zero = zone2Zero/30;
+  zone3Zero = zone3Zero/30;
+  zone4Zero = zone4Zero/30;
+  probeZero = probeZero/30;
 }
 
 void loop() {
@@ -65,61 +66,53 @@ void loop() {
   probeReading = analogRead(probeAnalogPin) - probeZero;
   
   if(probeReading > 50) {    
-    if(zone1Reading > 50){
-      while(zone1Reading > 50){  
-        Serial.print("1,");
-        zone1Reading = analogRead(zone1AnalogPin);
-        sensors_event_t event; 
-        bno.getEvent(&event);
-        
-        // Display the floating point data:
-        Serial.print(String(event.orientation.x) + ",");
-        Serial.print(String(event.orientation.y) + ",");
-        Serial.println(String(event.orientation.z) + ",");
-        
-      }
+    if(zone1Reading > 50){ 
+      Serial.print("1,");
+      sensors_event_t event; 
+      bno.getEvent(&event);
+      
+      // Display the floating point data:
+      Serial.print(String(event.orientation.x) + ",");
+      Serial.print(String(event.orientation.y) + ",");
+      Serial.println(String(event.orientation.z) + ",");
+      
     } else if(zone2Reading > 50){
-      while(zone2Reading > 50){  
-        zone2Reading = analogRead(zone2AnalogPin);
-        sensors_event_t event; 
-        bno.getEvent(&event);
-        Serial.print("2,");
-        // Display the floating point data:
-        Serial.print(String(event.orientation.x) + ",");
-        Serial.print(String(event.orientation.y) + ",");
-        Serial.print(String(event.orientation.z) + ",");
-        Serial.println("");
-  
-        delay(50);
-      }
+      sensors_event_t event; 
+      bno.getEvent(&event);
+      Serial.print("2,");
+      // Display the floating point data:
+      Serial.print(String(event.orientation.x) + ",");
+      Serial.print(String(event.orientation.y) + ",");
+      Serial.print(String(event.orientation.z) + ",");
+      Serial.println("");
+
+      delay(50);
+    
     } else if(zone3Reading > 50){
-      while(zone3Reading > 50){ 
-        Serial.print("3,"); 
-        zone3Reading = analogRead(zone3AnalogPin);
-        sensors_event_t event; 
-        bno.getEvent(&event);
-        
-        // Display the floating point data:
-        Serial.print(String(event.orientation.x) + ",");
-        Serial.print(String(event.orientation.y) + ",");
-        Serial.println(String(event.orientation.z) + ",");
-  
-        delay(50);
-      }
+      Serial.print("3,"); 
+      sensors_event_t event; 
+      bno.getEvent(&event);
+      
+      // Display the floating point data:
+      Serial.print(String(event.orientation.x) + ",");
+      Serial.print(String(event.orientation.y) + ",");
+      Serial.println(String(event.orientation.z) + ",");
+
+      delay(50);
+      
     } else if(zone4Reading > 50){
-      while(zone4Reading > 50){  
-        zone4Reading = analogRead(zone4AnalogPin);
-        sensors_event_t event; 
-        bno.getEvent(&event);
-        Serial.print("4,");
-        
-        // Display the floating point data:
-        Serial.print(String(event.orientation.x) + ",");
-        Serial.print(String(event.orientation.y) + ",");
-        Serial.println(String(event.orientation.z) + ",");
-        
-        delay(50);
-      }
+      zone4Reading = analogRead(zone4AnalogPin);
+      sensors_event_t event; 
+      bno.getEvent(&event);
+      Serial.print("4,");
+      
+      // Display the floating point data:
+      Serial.print(String(event.orientation.x) + ",");
+      Serial.print(String(event.orientation.y) + ",");
+      Serial.println(String(event.orientation.z) + ",");
+      
+      delay(50);
+      
     } else {
       Serial.println("Tissue");
       delay(50);
